@@ -1,0 +1,33 @@
+<a href="/dashboard" class="back"> &larr; Dashboard</a>
+
+    <article class="new-page">
+        <section class="edit-form">
+            <div class="form-heading">
+                <h2>Edit Post</h2>
+            </div>
+
+            <div class="form-section">
+                <form class="edit-post">
+                    <div class="post-title-section">
+                        <label for="post-label">Title</label>
+                        <input type="text" name="post-label" id="post-label" value="{{post.title}}" />
+                    </div>
+
+                    <div class="post-content">
+                        <label for="post-content">Post Content</label>
+                        <textarea class="entry-field" id="post-content" name="post-content">{{post.content}}</textarea>
+                    </div>
+
+                    <button type="submit">Update</button>
+                    <button type="button" class="delete-btn">Delete</button>
+                </form>
+            </div>
+        </section>
+    </article>
+
+    {{#if loggedIn}}
+
+    <script src="/public/editPost.js"></script>
+    <script src="/public/deletePost.js"></script>
+
+    {{/if}}
