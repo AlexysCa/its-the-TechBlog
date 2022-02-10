@@ -1,15 +1,14 @@
 const path = require('path');
 const express = require('express');
-const routes = require('./controllers');
+const session = require('express-session');
+const expresHan = require('express-handlebars');
+
 const utilDate = require('./utils/date')
 
-const expresHan = require('express-handlebars');
-const hbs = expresHan.create({utilDate});
-
+const app = express();
+const PORT = process.env.PORT || 3001;
 
 const sequelize = require('./config/connection')
-const session = require('express-session');
-const console = require('console');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 const sess  = {
@@ -24,20 +23,21 @@ const sess  = {
     })
 }
 
-const app = express();
-const PORT = process.env.PORT || 3001;
+app.use(session(sess));
+
+const hbs = expresHan.create({utilDate});
 
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
-app.use(session(sess));
+
 app.use(express.static(path.join(__dirname)));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, }));
-app.use(routes);
 
-sequelize.sync();
+app.use(require('./controllers'));
 
-app.listen(PORT, () => {
-    console.log(`App listening on the post ${PORT}`);
+sequelize.sync({ force: false }).then(() => {
+app.listen(PORT, () => console.log(`App listening on the post ${PORT}`));
 });
+
